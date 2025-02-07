@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>Transformer 1.0 - Personal Blog</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="Transformer 1.0 - Personal Blog" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://karenou.github.io/2024/03/11/2024-03-11-transformer-1-0/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2024-03-11T15:26:30.000Z" />
+  
+  <meta property="og:article:author" content="karenou" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Personal blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/">Posts</a>
+            
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item" href="/tags">Tags</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/Karenou" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>11,</span>
+            <span>2024</span>
+        </div>
+        
+
+        <h1 class="title">Transformer 1.0</h1>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h1><ul>
+<li>Year introduced: 2017</li>
+<li>Source paper: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1706.03762.pdf">Attention is All You Need</a></li>
+</ul>
+<h2 id="1-Background"><a href="#1-Background" class="headerlink" title="1. Background"></a>1. Background</h2><h3 id="1-1-Parallelization"><a href="#1-1-Parallelization" class="headerlink" title="1.1 Parallelization"></a>1.1 Parallelization</h3><p>The current SOTA models for sequence-to-sequence tasks have architectures based on either recurrent or convolution networks. Such backbones by nature precludes parallelization. As for recurrent network, for example, each hidden state $$h_t$$ is a function of the previous hidden state $$h_{t-1}$$ and input at the current position $$i_t$$, like $$h_t &#x3D; f(h_{t-1}, i_t)$$. On sequence level, the recurrent architecture needs to process the input and generate the hidden states sequentially, which is computationlly inefficient. The drawback gets severe when it comes to longer sequences due to memory constraints.</p>
+<h3 id="1-2-Long-term-dependencies"><a href="#1-2-Long-term-dependencies" class="headerlink" title="1.2 Long-term dependencies"></a>1.2 Long-term dependencies</h3><h2 id="2-Pros-and-Cons-of-Transformer"><a href="#2-Pros-and-Cons-of-Transformer" class="headerlink" title="2. Pros and Cons of Transformer"></a>2. Pros and Cons of Transformer</h2><ul>
+<li><p>Parallization</p>
+</li>
+<li><p>Able to learn long-term dependencies</p>
+</li>
+<li><p>model explanatory power</p>
+</li>
+</ul>
+<h2 id="3-Dive-Deep-into-Model-Architecture"><a href="#3-Dive-Deep-into-Model-Architecture" class="headerlink" title="3. Dive Deep into Model Architecture"></a>3. Dive Deep into Model Architecture</h2><h3 id="3-1-Encoder-Decoder-Stack"><a href="#3-1-Encoder-Decoder-Stack" class="headerlink" title="3.1 Encoder-Decoder Stack"></a>3.1 Encoder-Decoder Stack</h3><p>The backbone of transformer folows an encoder-decoder structure. Each encoder and decoder is a stack of N sub-blocks. The transformer paper sets N to 6.</p>
+<p>Below is the encoder and decoder sub-block inner model structure. An encoder block is composed of a multi-head attention layer, residual connections + layer normalization, followed by a point-wise fully connected neural network, and aother residual connections + layer normalization before the final layer output.</p>
+<p>The decoder block, however, is slightly different from the encoder block. It adds another multi-head attention layer to learn the dependencies between outpit from the last encoder block and the output from the previous multi-head attention layer in the decoder block. To prevent from data leakage and sure prediction from position i only depends on information from prior positions in the output sequence, the decoder modifies the multi-head attention layer and applies masking rightwards at each position.</p>
+<h3 id="3-2-Input-Embedding"><a href="#3-2-Input-Embedding" class="headerlink" title="3.2 Input Embedding"></a>3.2 Input Embedding</h3><p>The input to the first encoder block is a sequence of embedded vectors, which is a sum of word embedding and positional encoding vectors. The dimension of input embedding is (n, d_model), where n is the length of raw input sentence and d_model is the embedding dimension of each word in the sentence. Transformer sets an embedding dim of 512.</p>
+<p>The raw input sentence in the below example of Chinese-English translation tasks is “我有一只猫”. Each Chinese word is embedded to a 512-d vector and then concatenated vertically to a matrix with dimension (5, 512).</p>
+<p>The input embedding contains both semantic information from the word embedding and positional information from the positional encoding.</p>
+<h4 id="3-2-1-Word-Embedding"><a href="#3-2-1-Word-Embedding" class="headerlink" title="3.2.1 Word Embedding"></a>3.2.1 Word Embedding</h4><p>Transformer shares the learned word embedding matrix across the input embedding in encoder and output embedding in the decorder. The word embedding could be directly obtained from external models such as Word2Vec or Glove, or learnt end-to-end through the transformer model during training process. The paper multiples $$\sqrt{d_model}$$ element-wise to the word embedding matrix.</p>
+<h4 id="3-2-2-Positional-Encoding"><a href="#3-2-2-Positional-Encoding" class="headerlink" title="3.2.2 Positional Encoding"></a>3.2.2 Positional Encoding</h4>
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by karenou, licensed under <a href="undefined">undefined</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/nlp/" class="tag">#nlp</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        <a class="next"></a>
+        
+        <a href="/2024/03/09/hello-world/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">Hello World</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/about" class="item">About</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/Karenou/Ecommerce_consumer_behavior" class="item">E-commer consumer behavior</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/Karenou/lookbook_cloth_compatibility" class="item">Cloth compatibility measure</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/Karenou/Captcha_Classification" class="item">Captcha classification</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/Karenou/Toxic_Span_Detection" class="item">Toxic span detection</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2025 karenou<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
